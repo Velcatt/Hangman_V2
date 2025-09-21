@@ -2,3 +2,4 @@ __pycache__/
 .vscode/
 build/
 controller.spec
+Hangman.zip
