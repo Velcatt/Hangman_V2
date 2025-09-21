@@ -2,6 +2,7 @@ import pygame
 import random
 import datetime
 import ast
+import string
 from english_words import get_english_words_set
 
 ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
@@ -10,49 +11,18 @@ EASY_ENGLISH_WORDS_SET = set(
     line.strip().lower() for line in open("word_list_easy.txt")
 )
 
-ALPHABET_LIST = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-]
+ALPHABET_LIST = list(string.ascii_lowercase)
 
 
 class Game:
 
-    def __init__(self, difficulty, name):
-        if difficulty == "Easy":
-            self.difficulty = difficulty
+    def __init__(self, menu_route, name):
+        if menu_route == "Easy":
+            self.menu_route = menu_route
             self.goal = self.randomset(EASY_ENGLISH_WORDS_SET)
-        elif difficulty == "Hard":
-            self.difficulty = difficulty
+        elif menu_route == "Hard":
+            self.menu_route = menu_route
             self.goal = self.randomset(ENGLISH_WORDS_SET)
-        elif difficulty == "Quit":
-            self.run("quit")
-            self.goal = ""
-            quit()
         self.penalty = 0
         self.attempts = 0
         self.best_score = []
@@ -63,7 +33,6 @@ class Game:
         self.info = ""
         self.score = ""
         self.last_input = ""
-        self.newgame = True
         self.name = name
 
     def randomset(self, s):
@@ -85,10 +54,19 @@ class Game:
                 li.append(i)
         return li
 
+    def step(self, current):
+        result = ""
+        for i in current:
+            if i == "*":
+                result += "_ "
+            else:
+                result += i + " "
+        return result
+
     def save_score(self, best_score):
         converted_scorelist = []
         score_index = -1
-        if self.difficulty == "Hard":
+        if self.menu_route == "Hard":
             file = "best_scores_hard"
             with open(file) as f:
                 scorelist = f.read().splitlines()
@@ -139,19 +117,14 @@ class Game:
                 newcurrent += current[i]
         return newcurrent
 
-    def run(self, event):
-        if event == "quit":
-            self.newgame = False
-            return False
+    def update(self, last_input):
         if self.current == self.goal:
             if self.guess == "again":
-                self.newgame = True
                 return False
             elif self.guess == "quit":
-                self.newgame = False
                 return False
-        if self.guess != self.last_input:
-            self.guess = self.last_input
+        if self.guess != last_input:
+            self.guess = last_input
             if len(self.guess) > 1:
                 self.attempts += 1
                 if self.guess == self.goal:
@@ -187,14 +160,39 @@ class Game:
 class Menu:
 
     def __init__(self):
-        self.difficulty = ""
+        self.menu_route = ""
         self.name = ""
 
-    def update_diff(self, difficulty):
-        self.difficulty = difficulty
-
-    def quit_menu(self, event):
-        if event == "quit":
+    def update(self, menu_route):
+        self.menu_route = menu_route
+        if menu_route in ["Quit", "Scoreboard"]:
             return False
+        elif menu_route in ["Hard", "Easy"]:
+            if self.name == "":
+                return True
+            else:
+                return False
         else:
             return True
+
+    def set_name(self, name):
+        self.name = name
+
+
+class Scoreboard:
+    def __init__(self):
+        self.easy_scoreboard = [
+            line.strip().lower() for line in open("best_scores_easy")
+        ]
+        self.hard_scoreboard = [
+            line.strip().lower() for line in open("best_scores_hard")
+        ]
+        self.easy_converted_scorelist = []
+        self.easy_scoreboard_display = []
+        self.hard_converted_scorelist = []
+        self.hard_scoreboard_display = []
+        for element in self.easy_scoreboard:
+            self.easy_converted_scorelist.append(ast.literal_eval(element))
+
+        for element in self.hard_scoreboard:
+            self.hard_converted_scorelist.append(ast.literal_eval(element))
