@@ -185,12 +185,8 @@ class Menu:
 class Scoreboard:
 
     def __init__(self):
-        self.easy_scoreboard = [
-            line.strip().lower() for line in open("best_scores_easy")
-        ]
-        self.hard_scoreboard = [
-            line.strip().lower() for line in open("best_scores_hard")
-        ]
+        self.easy_scoreboard = [line.strip() for line in open("best_scores_easy")]
+        self.hard_scoreboard = [line.strip() for line in open("best_scores_hard")]
         self.easy_converted_scorelist = []
         self.easy_scoreboard_display = []
         self.hard_converted_scorelist = []
