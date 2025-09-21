@@ -183,6 +183,7 @@ class Menu:
 
 
 class Scoreboard:
+
     def __init__(self):
         self.easy_scoreboard = [
             line.strip().lower() for line in open("best_scores_easy")

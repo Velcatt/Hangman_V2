@@ -7,13 +7,14 @@ FONT = pygame.font.Font(None, 32)
 
 class InputBox:
 
-    def __init__(self, x, y, w, h, text="", disabled=False):
+    def __init__(self, x, y, w, h, text="", disabled=False, maxlength=45):
         self.rect = pygame.Rect(x, y, w, h)
         self.color = COLOR_ACTIVE
         self.text = text
         self.txt_surface = FONT.render(text, True, self.color)
         self.last_input = ""
         self.disabled = disabled
+        self.maxlength = maxlength
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -23,7 +24,7 @@ class InputBox:
                     self.text = ""
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
-            else:
+            elif len(self.text) < self.maxlength:
                 self.text += event.unicode
             # Re-render the text.
             self.txt_surface = FONT.render(self.text, True, self.color)

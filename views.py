@@ -105,7 +105,7 @@ class MenuGraph:
         self.title = self.title_font.render("HANGMAN", False, (0, 0, 0))
         self.name_font = pygame.font.SysFont(None, 25)
         self.name = self.name_font.render("Enter your name : ", False, (255, 255, 255))
-        self.name_input = InputBox(200, 500, 200, 32, disabled=True)
+        self.name_input = InputBox(200, 500, 200, 32, disabled=True, maxlength=8)
 
     def draw(self, screen, event):
         screen.blit(self.bg, (0, 0))
@@ -115,7 +115,6 @@ class MenuGraph:
         self.hard.draw(screen)
         self.scoreboard.draw(screen)
         self.quit.draw(screen)
-        self.name_input.update()
         self.name_input.handle_event(event)
         self.name_input.draw(screen)
         pygame.display.update()
