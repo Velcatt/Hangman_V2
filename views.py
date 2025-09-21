@@ -29,7 +29,7 @@ class GameGraph:
         screen.blit(self.bg, (0, 0))
         screen.blit(self.announcement, (230, 350))
         screen.blit(self.text_surface, (50, 460))
-        screen.blit(self.info, (270, 505))
+        screen.blit(self.info, (50, 550))
         screen.blit(self.score, (230, 375))
 
         self.input_box.update()
@@ -95,6 +95,7 @@ class GameGraph:
 
 
 class MenuGraph:
+
     def __init__(self):
         self.bg = pygame.image.load("pixelart.png")
         self.easy = Button(200, 200, 200, 32, "Easy", pygame.Color("black"))

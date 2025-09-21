@@ -3,12 +3,13 @@ import random
 import datetime
 import ast
 import string
-from english_words import get_english_words_set
-
-ENGLISH_WORDS_SET = get_english_words_set(["web2"], lower=True)
 
 EASY_ENGLISH_WORDS_SET = set(
     line.strip().lower() for line in open("word_list_easy.txt")
+)
+
+HARD_ENGLISH_WORDS_SET = set(
+    line.strip().lower() for line in open("word_list_hard.txt")
 )
 
 ALPHABET_LIST = list(string.ascii_lowercase)
@@ -22,7 +23,7 @@ class Game:
             self.goal = self.randomset(EASY_ENGLISH_WORDS_SET)
         elif menu_route == "Hard":
             self.menu_route = menu_route
-            self.goal = self.randomset(ENGLISH_WORDS_SET)
+            self.goal = self.randomset(HARD_ENGLISH_WORDS_SET)
         self.penalty = 0
         self.attempts = 0
         self.best_score = []
