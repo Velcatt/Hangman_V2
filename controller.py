@@ -138,7 +138,13 @@ while isRunning:
             if pygame_event.type == pygame.QUIT:
                 isGame = False
                 isRunning = False
-            pygame.display.update()
+            if isGame:
+                pygame.display.update()
+        if game.newgame:
+            isGame = True
+        else:
+            isGame = False
+            isMenu = True
 
 pygame.display.quit()
 pygame.quit()

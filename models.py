@@ -34,6 +34,7 @@ class Game:
         self.score = ""
         self.last_input = ""
         self.name = name
+        self.newgame = True
 
     def randomset(self, s):
         return random.sample(sorted(s), 1)[0]
@@ -120,8 +121,10 @@ class Game:
     def update(self, last_input):
         if self.current == self.goal:
             if self.guess == "again":
+                self.newgame = True
                 return False
             elif self.guess == "quit":
+                self.newgame = False
                 return False
         if self.guess != last_input:
             self.guess = last_input
